@@ -1,6 +1,7 @@
 
 public class StudentID {
 	protected String strId;
+	protected int enter = 0, number = 0;
 	
 	// (A)
 	public StudentID(String id){
@@ -9,12 +10,14 @@ public class StudentID {
 	
 	// (B)
 	public StudentID(int enter, int number){
-		this.strId = String.format("%02d_%05d", enter, number);
+		this.enter = enter;
+		this.number = number;
+		this.strId = toString();
 	}
 	
 	// (C)
 	public String toString(){
-		return strId;
+		return String.format("%02d_%05d", enter, number);
 	}
 	
 	

@@ -1,0 +1,4 @@
+delete c1
+move t1 100 50
+create rectangle 400 300 600 400 r1
+clear
