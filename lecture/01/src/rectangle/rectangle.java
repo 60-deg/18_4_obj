@@ -1,3 +1,5 @@
+package rectangle;
+
 class Rectangle {
 	int width;
 	int height;
@@ -26,7 +28,7 @@ class NamedRectangle extends Rectangle{
 	NamedRectangle(String name){
 			this.name = name;
 	}
-	
+
 	public static void main(String[] args){
 			NamedRectangle nr = new NamedRectangle();
 			nr.setSize(123,45);

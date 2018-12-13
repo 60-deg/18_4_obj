@@ -1,5 +1,6 @@
 package drawdemo;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Scanner;
 
@@ -26,6 +27,7 @@ public class ColoredRectangle extends Rectangle{
 		this.ys[3] = y + h / 2;
 	}
 	void draw(Graphics g) {
+		g.setColor(new Color(this.r, this.g, this.b));
 		g.fillPolygon(xs, ys, xs.length);
 	}
 }

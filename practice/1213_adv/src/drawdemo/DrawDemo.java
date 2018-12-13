@@ -1,14 +1,24 @@
 package drawdemo;
 
 
-import java.awt.*;
-import java.util.*;
-import java.awt.event.*;
- 
+import java.awt.BorderLayout;
+import java.awt.Canvas;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Scanner;
+
 @SuppressWarnings("serial")
 public class DrawDemo extends Canvas implements ActionListener {
 	public HashMap<String, Figure> figList;
- 
+
 	public DrawDemo() {
 		Frame f = new Frame("Welcome to Drawing Demo");
 		TextField userInput = new TextField(" コマンドを入れてください ");
@@ -25,7 +35,7 @@ public class DrawDemo extends Canvas implements ActionListener {
 		f.setVisible(true); //  ウィンドウを見せる
 		figList = new LinkedHashMap<String, Figure>(); //  図形を管理するリスト
 	}
- 
+
 	public void paint(Graphics g) { // figList 中にある図形を再描画時に描画
 		Iterator<String> itr = figList.keySet().iterator(); //  反復子
 		while (itr.hasNext()) {
@@ -33,14 +43,14 @@ public class DrawDemo extends Canvas implements ActionListener {
 			f.draw(g); //  各図形インスタンスの描画メソッドを呼ぶ
 		}
 	}
- 
+
 	// actionPerformed: ActionListner のメソッド ( インタフェースの実装 )
 	public void actionPerformed(ActionEvent e) { //  入力完了時の処理
 		String str = ((TextField) e.getSource()).getText(); //  入力文字列
 		Scanner kb = new Scanner(str); //  入力文字列の Scanner を生成
 		Figure fig; //  作業用変数
 		int x, y;
- 
+
 		str = kb.next(); //  最初のトークン ( コマンドのはず ) 読み込み
 		if (str.equals("create")) { //  新しい図形の生成 ?
 			str = kb.next(); //  図形のタイプを読み込み,インスタンス生成
@@ -52,6 +62,8 @@ public class DrawDemo extends Canvas implements ActionListener {
 				fig = new Rectangle();
 			} else if (str.equals("filledrectangle")) {
 				fig = new FilledRectangle();
+			} else if (str.equals("coloredrectangle")) {
+				fig = new ColoredRectangle();
 			}else if (str.equals("line")) {
 				fig = new Line();
 			} else { //  知らない図形タイプ
@@ -88,50 +100,50 @@ public class DrawDemo extends Canvas implements ActionListener {
 		}
 		repaint(); // Canvas クラスのメソッド
 	}
- 
+
 	public static void main(String[] args) {
 		new DrawDemo(); // DrawDemo のインスタンスを生成
 	}
 }
- 
+
 abstract class Figure {
 	int x, y; //  重心の (x,y) 座標
 	String name; //  図形の名前
- 
+
 	public String getName() {
 		return name;
 	} //  名前を返す
- 
+
 	abstract void parse(Scanner s); //  以下抽象クラス
- 
+
 	abstract void move(int dx, int dy); //  これらは派生クラスで実装される
- 
+
 	abstract void draw(Graphics g); //  図形毎に処理が違う !
 }
- 
+
 class Circle extends Figure {
 	int r;
- 
+
 	void parse(Scanner s) { // "create circle ↓x y r name" 次は ↓ から読み込み
 		this.x = s.nextInt(); //  重心:親の Figure クラスのフィールド
 		this.y = s.nextInt();
 		this.r = s.nextInt(); //  半径: Circle クラスのフィールド
 		this.name = s.next(); //  名前:親の Figure クラスのフィールド
 	}
- 
+
 	void move(int dx, int dy) {
 		this.x += dx;
 		this.y += dy;
 	}
- 
+
 	void draw(Graphics g) {
 		g.drawOval(x - r, y - r, 2 * r, 2 * r);
 	}
 }
- 
+
 abstract class Polygon extends Figure { // Triangle, Rectangle に共通の
 	int[] xs, ys; // move, draw を実装
- 
+
 	void move(int dx, int dy) {
 		this.x += dx;
 		this.y += dy;
@@ -140,12 +152,12 @@ abstract class Polygon extends Figure { // Triangle, Rectangle に共通の
 			this.ys[i] += dy;
 		}
 	}
- 
+
 	void draw(Graphics g) {
 		g.drawPolygon(xs, ys, xs.length);
 	}
 }
- 
+
 class Triangle extends Polygon {
 	void parse(Scanner s) { // "create triangle ↓x1 y1 x2 y2 x3 y3 name"
 		this.xs = new int[3];
@@ -161,10 +173,10 @@ class Triangle extends Polygon {
 		this.y = (ys[0] + ys[1] + ys[2]) / 3;
 	}
 }
- 
+
 class Rectangle extends Polygon {
 	int w, h;
- 
+
 	void parse(Scanner s) { // "create rectangle ↓x y w h name"
 		this.xs = new int[4];
 		this.ys = new int[4];
