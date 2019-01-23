@@ -1,5 +1,5 @@
 public class GrandChild extends Child {
-	protected String name = "NONAME(grandchild)";
+//	protected String name = "NONAME(grandchild)";	// override (GrandChild.name を定義)
 
 	public GrandChild() {
 		System.out.println("GrandChild() was called");
