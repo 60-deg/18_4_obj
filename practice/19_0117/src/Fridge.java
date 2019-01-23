@@ -1,12 +1,12 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Fridge implements Aggregate {
 	private List<Food> foods = new ArrayList<Food>();
 
 	@Override
-	public MyIterator iterator() {
-		// TODO Auto-generated method stub
-		return null;
+	public FridgeIterator iterator() {
+		return new FridgeIterator(foods.iterator());
 	}
 
 	public void add(Food food) {

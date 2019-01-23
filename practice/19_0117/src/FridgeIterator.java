@@ -1,17 +1,20 @@
 import java.util.Iterator;
 
 public class FridgeIterator implements MyIterator {
+	private Iterator<Food> itr;
+
+	public FridgeIterator(Iterator<Food> newItr){
+		this.itr = newItr;
+	}
 
 	@Override
 	public Object next() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.itr.next();
 	}
 
 	@Override
 	public boolean hasNext() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.itr.hasNext();
 	}
 
 }
